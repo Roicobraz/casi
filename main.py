@@ -1,7 +1,11 @@
 from tkinter import *
+from tkinter import ttk
+
 from tkinter.messagebox import *
 
-import parameters, os, os.path
+import os, os.path 
+
+import parameters
 
 frame = ""
 
@@ -12,11 +16,12 @@ init.resizable(False, False)
 
 def setPath(event = ""):
     if(entryPath.get() != "" and (not os.path.isfile("./parameters.json")) and os.path.exists(entryPath.get())):
-        parameters.paramInit()
+        parameters.parameters()
         path = entryPath.get()
         parameters.addPath(path)
 
         if askyesno('Chargement', 'Voulez-vous enrigistrer automatiquement les projets déjà existant?'):
+            parameters.autoload(True)
             for name in os.listdir(path):
                 if(os.path.isdir(path+"\\"+name)):
                     parameters.addSite(name)
@@ -26,6 +31,8 @@ def setPath(event = ""):
     elif(not os.path.exists(entryPath.get())):
         showerror('Erreur', 'Chemin invalide!')
 
+if(parameters.fileExist):
+    parameters.autoloadSites()
 
 if (not parameters.fileExist):
     frame = Frame(init, height=250)
@@ -37,5 +44,20 @@ if (not parameters.fileExist):
     Button(frame, text="Confirmer", command=setPath).pack()
 
     frame.place(relx=.5, rely=.45,anchor= CENTER)
-    
+else:
+    menu = Frame(init, bg="#636363", height=250)
+
+    listeSite=["Choisir un site"]
+    listeCombo = ttk.Combobox(menu, values=listeSite)
+    listeCombo.current(0)
+
+
+    btnSite = Button(menu, text="Site")
+    btnDb = Button(menu, text="Base de données")
+
+    listeCombo.pack()
+    btnSite.pack()
+    btnDb.pack()
+
+    menu.pack(side=TOP, anchor=NW)
 init.mainloop()
