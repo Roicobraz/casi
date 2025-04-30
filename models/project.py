@@ -1,6 +1,7 @@
 import os.path, json
 from tkinter import *
 from tkinter import filedialog
+import shutil
 
 path = './parameters.json'
 fileExist = os.path.isfile(path)
@@ -11,7 +12,7 @@ fileExist = os.path.isfile(path)
 def initDirectory(label_file_explorer: Label):
     filename = filedialog.askdirectory()
     if (filename == ""):
-        filename = "\n\\"
+        filename = "\\"
     label_file_explorer.configure(text="Répertoire des projets: \n"+filename)
     return(filename)
 
@@ -50,7 +51,34 @@ def addProject(name):
         file.close()
         parameters(datas)
 
-def getProject(name):
+def supprProject(project_name):
+    path_project = getDirectory()+"\\"+project_name
+
+    if(os.path.isdir(path_project)):
+        shutil.rmtree(path_project)
+    if(not os.path.isdir(path_project)):
+        with open(path, 'r', encoding='utf-8') as file:
+            datas = json.load(file)
+            for project in datas["projects"]:
+                if (project.get('name') == project_name):
+                    datas["projects"].remove(project)
+                    break  
+        file.close()
+        parameters(datas)
+
+
+def getIdProject(name) -> int:
+    count = 0
+    with open(path, 'r', encoding='utf-8') as file:
+        datas = json.load(file)
+        for project in datas['projects']:
+            if(project['name'] == name):
+                break
+            count += 1
+    file.close()
+    return(count)
+
+def getProject(name) -> dict|int:
     with open(path, 'r', encoding='utf-8') as file:
         datas = json.load(file)
         for project in datas['projects']:
@@ -61,7 +89,7 @@ def getProject(name):
     file.close()
     return(project)
 
-def getAllProjects():
+def getAllProjects() -> list:
     with open(path, 'r', encoding='utf-8') as file:
         datas = json.load(file)
         arrprojects = []
@@ -71,7 +99,7 @@ def getAllProjects():
     file.close()
     return(arrprojects)
 
-def checkSolution(project_name):
+def checkSolution(project_name: str):
     solution = ""
     version = ""
     with open(path, 'r', encoding='utf-8') as file:

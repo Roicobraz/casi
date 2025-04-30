@@ -17,10 +17,7 @@ if(models.project.fileExist):
 def setPath(event = ""):
     entryPath = repository['text']
     if(entryPath != "Répertoire des projets: \\"):
-        print(entryPath)
-
-        entryPath = entryPath.replace("Répertoire des projets: ", "")
-        print(entryPath)
+        entryPath = entryPath.replace("Répertoire des projets: \n", "")
         models.project.parameters()
         path = entryPath
         models.project.addPath(path)
@@ -40,10 +37,10 @@ def setPath(event = ""):
 if (not models.project.fileExist):
     frame = Frame(init, height=250)
 
-    repository = Label(frame, text="Répertoire des projets: \\")
+    repository = Label(frame, text="Répertoire des projets: ")
     repository.pack()
 
-    entryPath = Button(frame, text="Chercher dans le PC", command=lambda: models.project.initDirectory()).pack()
+    entryPath = Button(frame, text="Chercher dans le PC", command=lambda: models.project.initDirectory(repository)).pack()
 
     Button(frame, text="Confirmer", command=setPath).pack()
 
