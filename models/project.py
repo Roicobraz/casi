@@ -1,4 +1,6 @@
 import os.path, json
+from tkinter import *
+from tkinter import filedialog
 
 path = './parameters.json'
 fileExist = os.path.isfile(path)
@@ -6,76 +8,82 @@ fileExist = os.path.isfile(path)
 # TODO
 # Suppression des projets dans le parametre.json si autoload actif
 
-def parameters(structure = {'path_sites': '', 'sites': [], 'autoload': False}):
+def initDirectory(label_file_explorer: Label):
+    filename = filedialog.askdirectory()
+    if (filename == ""):
+        filename = "\n\\"
+    label_file_explorer.configure(text="Répertoire des projets: \n"+filename)
+    return(filename)
+
+def setDirectory(label):
+    filename = initDirectory(label)
+    with open(path, 'r', encoding='utf-8') as file:
+        datas = json.load(file)
+        datas["path_projects"] = filename
+        file.close()
+        parameters(datas)
+
+def getDirectory():
+    with open(path, 'r', encoding='utf-8') as file:
+        data = json.load(file)["path_projects"]
+    file.close()
+    return(data)
+
+def parameters(structure = {'path_projects': '', 'projects': [], 'autoload': False}):
     with open(path, 'w') as file:
         file.write(json.dumps(structure, sort_keys=True, indent=4))
         file.close()
 
-def addPath(path_site):
+def addPath(path_project):
     with open(path, 'r', encoding='utf-8') as file:
         datas = json.load(file)
-        datas["path_sites"] = path_site
+        datas["path_projects"] = path_project
         file.close()
         parameters(datas)
 
-def addSite(name):
+def addProject(name):
     with open(path, 'r', encoding='utf-8') as file:
         datas = json.load(file)
         
         solution = checkSolution(name)
-        datas["sites"].append({"name": name, "solution": solution[0], "version": solution[1]})
+        datas["projects"].append({"name": name, "solution": solution[0], "version": solution[1]})
         file.close()
         parameters(datas)
 
-def getSites():
+def getProject(name):
     with open(path, 'r', encoding='utf-8') as file:
         datas = json.load(file)
-        arrSites = []
-
-        # je parcoure le json
-        for site in datas['sites']:
-            arrSites.append(site['name'])
+        for project in datas['projects']:
+            if(project['name'] == name):
+                break
+            else:
+                project = 0
     file.close()
-    return(arrSites)
+    return(project)
 
-
-def autoload(activate):
+def getAllProjects():
     with open(path, 'r', encoding='utf-8') as file:
         datas = json.load(file)
-        datas["autoload"] = activate
-        file.close()
-        parameters(datas)
+        arrprojects = []
 
-def autoloadSites():
-    with open(path, 'r', encoding='utf-8') as file:
-        datas = json.load(file)
-        if(datas["autoload"]):
-            arrSites = []
-
-            # je parcoure le json
-            for site in datas['sites']:
-                if(site['name'] not in arrSites):
-                    arrSites.append(site['name'])
-
-            # je parcoure le dossier
-            for name in os.listdir(datas['path_sites']):
-                if(os.path.isdir(datas['path_sites']+"\\"+name) and ( name not in arrSites)):
-                    addSite(name)
-        file.close() 
+        for project in datas['projects']:
+            arrprojects.append(project['name'])
+    file.close()
+    return(arrprojects)
 
 def checkSolution(project_name):
     solution = ""
     version = ""
     with open(path, 'r', encoding='utf-8') as file:
         datas = json.load(file)
-        path_site = datas["path_sites"]
-        for project in os.listdir(path_site + "\\" + project_name):
+        path_project = datas["path_projects"]
+        for project in os.listdir(path_project + "\\" + project_name):
             if( "license.txt" == project or "wp-admin" == project or "wp-content" == project or "wp-includes" == project):
-                with open(path_site + "\\" + project_name + "\\" + 'license.txt') as licence:
+                with open(path_project + "\\" + project_name + "\\" + 'license.txt') as licence:
                     first_line = licence.readline()
                     if("WordPress" in first_line):
                         solution = "WordPress"
-                        with open(path_site + "\\" + project_name + "\\wp-includes\\version.php") as version_file:
+                        with open(path_project + "\\" + project_name + "\\wp-includes\\version.php") as version_file:
                             for line_no, line in enumerate(version_file):
                                 if line_no == 18:    
                                     version = line.replace("$wp_version = '", "")
@@ -85,7 +93,7 @@ def checkSolution(project_name):
                     file.close()
                     break
             elif("README.md" == project):
-                with open(path_site + "\\" + project_name + "\\" + 'README.md') as readme:
+                with open(path_project + "\\" + project_name + "\\" + 'README.md') as readme:
                     first_line = readme.readline()
                     if("MVC-POO" in first_line):
                         solution = "JV Framework"

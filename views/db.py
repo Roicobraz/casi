@@ -6,4 +6,4 @@ def effectDb(frame_content: Frame):
     db_frame(frame_content)
 
 def db_frame(frame_content: Frame):
-    print("test")
+    print("Affichage de la db du projet")
