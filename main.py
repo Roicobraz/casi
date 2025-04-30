@@ -1,18 +1,19 @@
 from tkinter import *
 from tkinter import ttk
-
 from tkinter.messagebox import *
 
 import os, os.path 
 
-import parameters
+import parameters, views.nav
 
-frame = ""
 
 init = Tk()
 init.title("Initialisation")
 init.geometry("500x250")
 init.resizable(False, False)
+
+if(parameters.fileExist):
+    parameters.autoloadSites()
 
 def setPath(event = ""):
     if(entryPath.get() != "" and (not os.path.isfile("./parameters.json")) and os.path.exists(entryPath.get())):
@@ -28,11 +29,9 @@ def setPath(event = ""):
 
         for widget in frame.winfo_children():
             widget.destroy()
+        views.nav.nav_frame(init)
     elif(not os.path.exists(entryPath.get())):
         showerror('Erreur', 'Chemin invalide!')
-
-if(parameters.fileExist):
-    parameters.autoloadSites()
 
 if (not parameters.fileExist):
     frame = Frame(init, height=250)
@@ -45,19 +44,5 @@ if (not parameters.fileExist):
 
     frame.place(relx=.5, rely=.45,anchor= CENTER)
 else:
-    menu = Frame(init, bg="#636363", height=250)
-
-    listeSite=["Choisir un site"]
-    listeCombo = ttk.Combobox(menu, values=listeSite)
-    listeCombo.current(0)
-
-
-    btnSite = Button(menu, text="Site")
-    btnDb = Button(menu, text="Base de données")
-
-    listeCombo.pack()
-    btnSite.pack()
-    btnDb.pack()
-
-    menu.pack(side=TOP, anchor=NW)
+    views.nav.nav_frame(init)
 init.mainloop()

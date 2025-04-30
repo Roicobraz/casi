@@ -3,6 +3,9 @@ import os.path, json
 path = './parameters.json'
 fileExist = os.path.isfile(path)
 
+# TODO
+# Suppression des projets dans le parametre.json si autoload actif
+
 def parameters(structure = {'path_sites': '', 'sites': [], 'autoload': False}):
     with open(path, 'w') as file:
         file.write(json.dumps(structure, sort_keys=True, indent=4))
@@ -23,6 +26,18 @@ def addSite(name):
         datas["sites"].append({"name": name, "solution": solution[0], "version": solution[1]})
         file.close()
         parameters(datas)
+
+def getSites():
+    with open(path, 'r', encoding='utf-8') as file:
+        datas = json.load(file)
+        arrSites = []
+
+        # je parcoure le json
+        for site in datas['sites']:
+            arrSites.append(site['name'])
+    file.close()
+    return(arrSites)
+
 
 def autoload(activate):
     with open(path, 'r', encoding='utf-8') as file:

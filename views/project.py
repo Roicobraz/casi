@@ -1,9 +1,9 @@
 from tkinter import *
 
-def effectDb(frame_content: Frame):
+def effectProject(frame_content: Frame):
     for widget in frame_content.winfo_children():
         widget.destroy()
-    db_frame(frame_content)
+    project_frame(frame_content)
 
-def db_frame(frame_content: Frame):
+def project_frame(frame_content: Frame):
     print("test")
