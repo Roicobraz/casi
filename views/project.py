@@ -13,8 +13,7 @@ def verifySupprProject(project, comboProject: ttk.Combobox, frame_content):
         comboProject["values"] = tuple(values)
         effectProject(frame_content, comboProject)
 
-
-def effectProject(frame_content: Frame, comboProject: ttk.Combobox, event = ""):
+def effectProject(frame_content: Frame, comboProject: ttk.Combobox):
     for widget in frame_content.winfo_children():
         widget.destroy()
     project_frame(frame_content, comboProject)

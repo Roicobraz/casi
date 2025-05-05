@@ -2,8 +2,9 @@ from tkinter import *
 from tkinter import ttk
 
 from views.parameter import *
-from views.db import *
 from views.project import *
+
+import models.project
 
 def nav_frame(init: Tk):
     menu_frame = Frame(init, bg="#636363")
@@ -18,15 +19,16 @@ def nav_frame(init: Tk):
     comboProject["values"] = models.project.listeProject
     comboProject.current(0)
 
-    comboProject.bind('<<ComboboxSelected>>', lambda event: effectProject(frame_content, comboProject, event))
+    comboProject.bind('<<ComboboxSelected>>', lambda event: listProjectEvent(frame_content, comboProject, event))
 
     btnProject = Button(menu_frame, text="Projet", command = lambda: effectProject(frame_content, comboProject))
-    btnDb = Button(menu_frame, text="Base de données", command = lambda: effectDb(frame_content))
     btnParameter = Button(menu_frame, text="Paramètres", command = lambda: effectParameter(frame_content))
 
     comboProject.pack()
     btnProject.pack()
-    btnDb.pack()
     btnParameter.pack(side=BOTTOM, anchor=SW)
 
     parameter_frame(frame_content)
+
+def listProjectEvent(frame_content, comboProject, event=""):
+    effectProject(frame_content, comboProject)
