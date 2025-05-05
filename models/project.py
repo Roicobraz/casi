@@ -5,9 +5,7 @@ import shutil
 
 path = './parameters.json'
 fileExist = os.path.isfile(path)
-
-# TODO
-# Suppression des projets dans le parametre.json si autoload actif
+listeProject = ["Choisir un projet"]
 
 def initDirectory(label_file_explorer: Label):
     filename = filedialog.askdirectory()

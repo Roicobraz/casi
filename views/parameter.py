@@ -8,10 +8,6 @@ def effectParameter(frame_content: Frame):
     parameter_frame(frame_content)
 
 def parameter_frame(frame_content: Frame):
-    # TODO 
-    # autoload checké si autoload de parametre.json est en true
-    # coché ou déchoché cela change la valeur dans le parametre.json
-
     check_var = BooleanVar(value=models.autoload.getAutoload())
     checkBtn_autoload = Checkbutton(frame_content, text='Autoload', bg="white", variable=check_var, command=lambda: models.autoload.effectAutoload(check_var))
 

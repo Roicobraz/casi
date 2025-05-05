@@ -16,7 +16,7 @@ if(models.project.fileExist):
 
 def setPath(event = ""):
     entryPath = repository['text']
-    if(entryPath != "Répertoire des projets: \\"):
+    if(entryPath != "Répertoire des projets: \\" and entryPath != "Répertoire des projets: \n\\"):
         entryPath = entryPath.replace("Répertoire des projets: \n", "")
         models.project.parameters()
         path = entryPath
@@ -30,7 +30,9 @@ def setPath(event = ""):
 
         for widget in frame.winfo_children():
             widget.destroy()
+        init.title("Casi")
         views.nav.nav_frame(init)
+
     else:
         showerror('Erreur', 'Veuillez rechercher un répertoire!')
 
@@ -46,5 +48,6 @@ if (not models.project.fileExist):
 
     frame.place(relx=.5, rely=.45,anchor= CENTER)
 else:
+    init.title("Casi")
     views.nav.nav_frame(init)
 init.mainloop()

@@ -31,14 +31,22 @@ def autoloadProjects():
         if(datas["autoload"]):
             arrprojects = []
 
-            # je parcoure le json
             for project in datas['projects']:
                 if(project['name'] not in arrprojects):
                     arrprojects.append(project['name'])
+            
+            for supprproject in arrprojects:
+                if(not os.path.isdir(datas['path_projects']+"\\"+supprproject)):
+                    print(project)
+                    for project in datas["projects"]:
+                        if (supprproject == project['name']):
+                            datas["projects"].remove(project)
+                            break  
+            models.project.parameters(datas)
 
-            # je parcoure le dossier
             for name in os.listdir(datas['path_projects']):
                 if(os.path.isdir(datas['path_projects']+"\\"+name) and ( name not in arrprojects)):
                     models.project.addProject(name)
+
         file.close() 
 
