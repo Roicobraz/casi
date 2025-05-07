@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter.messagebox import *
 
 import models.solution
 
@@ -9,14 +10,10 @@ def solution_window():
     solutionWdw.geometry("385x250")
     solutionWdw.resizable(False, False)
 
-    solutions = models.solution.getAllNameSolutions()
-    for solution in solutions:
-        models.solution.listeSolution.append(solution)
-
     frameSolution = Frame(solutionWdw)
 
     comboSolution = ttk.Combobox(frameSolution, width=25)
-    comboSolution["values"] = models.solution.listeSolution
+    comboSolution["values"] = models.solution.updcomboboxSolutions()
     comboSolution.current(0)
 
     comboSolution.bind('<<ComboboxSelected>>', lambda event: listSolution(solutionWdw, comboSolution, event))
@@ -52,6 +49,9 @@ def solution_window():
     btnConfirm = Button(solutionWdw, text="Confirmer", command=lambda: effectVersion(comboSolution, entryName, entryLink, listeVersions))
     btnConfirm.grid(row=2, column=1)
 
+    btnSuppr = Button(solutionWdw, text="Supprimer la solution", command=lambda: verifySupprSolution(comboSolution.get(), comboSolution, solutionWdw))
+    btnSuppr.grid(row=2, column=2)
+
 def addVersionToList(entryVersion, listeVersions: Listbox, event=""):
     if(type(entryVersion) == Entry):
         if(entryVersion.get() != "" and not entryVersion.get().isspace()):
@@ -85,11 +85,7 @@ def listSolution(window: Tk, comboSolution: ttk.Combobox, event=""):
                         for version in solution_datas['versions']:
                             addVersionToList(version, widget)
     else:
-        for child in window.winfo_children():
-            if(type(child) == Frame):
-                for widget in child.winfo_children(): 
-                    if(widget.winfo_name() == "name" or widget.winfo_name() == "link" or widget.winfo_name() == "versions"): 
-                        widget.delete(0, "end")
+        resetEntries(window)
 
 def effectVersion(comboSolution: ttk.Combobox, name: Entry, link: Entry, versions: Listbox):
     solution_datas = models.solution.getSolution(comboSolution.get())
@@ -97,3 +93,19 @@ def effectVersion(comboSolution: ttk.Combobox, name: Entry, link: Entry, version
         models.solution.updateSolution(solution_datas, name.get(), link.get(), versions.get(0, "end"))
     else:
         models.solution.addSolution(name.get(), link.get(), versions.get(0, "end"))
+
+def verifySupprSolution(solution, comboSolution: ttk.Combobox, window: Tk):
+    if askyesno('Confirmation', 'Voulez-vous supprimer la solution ' + solution + '?'):
+        models.solution.supprSolution(solution)
+        comboSolution.current(0)
+        values = list(comboSolution["values"])
+        values.remove(solution)
+        comboSolution["values"] = tuple(values)
+        resetEntries(window)
+
+def resetEntries(window: Tk):
+    for child in window.winfo_children():
+            if(type(child) == Frame):
+                for widget in child.winfo_children(): 
+                    if(type(widget) == Entry or type(widget) == Listbox): 
+                        widget.delete(0, "end")
