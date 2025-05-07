@@ -3,7 +3,7 @@ from tkinter import *
 from tkinter import filedialog
 import shutil
 
-path = './parameters.json'
+path = './datas/parameters.json'
 fileExist = os.path.isfile(path)
 listeProject = ["Choisir un projet"]
 
@@ -63,7 +63,6 @@ def supprProject(project_name):
                     break  
         file.close()
         parameters(datas)
-
 
 def getIdProject(name) -> int:
     count = 0
@@ -131,3 +130,8 @@ def checkSolution(project_name: str):
                     file.close()
         file.close()
     return(solution, version)
+
+def createProject(name, solution, version):
+    print('creation de projet')
+    # import subprocess
+    # subprocess.Popen("git clone https://github.com/Roicobraz/mvc_poo.git C:/xampp/htdocs/dev_web/testgit --branch V0.1", shell=True)

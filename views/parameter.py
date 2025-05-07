@@ -1,6 +1,7 @@
 from tkinter import *
 
 import models.autoload, models.project
+import views.solution
 
 def effectParameter(frame_content: Frame):
     for widget in frame_content.winfo_children():
@@ -13,8 +14,12 @@ def parameter_frame(frame_content: Frame):
 
     
     repository = Label(frame_content, text="Répertoire des projets: \n"+models.project.getDirectory(), bg="white")
-    entryPath = Button(frame_content, text="Chercher dans le PC", bg="white", command=lambda: models.project.setDirectory(repository))
+    btnPath = Button(frame_content, text="Chercher dans le PC", bg="white", command=lambda: models.project.setDirectory(repository))
+
+    btnSolution = Button(frame_content, text="Gérer les Frameworks/CMS", bg="white", command=lambda: views.solution.solution_window())
+
 
     checkBtn_autoload.pack()
     repository.pack()
-    entryPath.pack()
+    btnPath.pack()
+    btnSolution.pack()

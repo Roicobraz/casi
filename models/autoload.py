@@ -3,7 +3,7 @@ import os.path, json
 
 import models.project
 
-path = './parameters.json'
+path = './datas/parameters.json'
 
 def getAutoload() -> bool:
     with open(path, 'r', encoding='utf-8') as file:

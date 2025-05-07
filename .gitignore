@@ -1,6 +1,7 @@
 /__pycache__/*
 /views/__pycache__/*
-parameters.json
+/datas/*
 
+# pour les prochianes maj
 /models/server.py
 /views/db.py

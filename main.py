@@ -4,7 +4,9 @@ from tkinter.messagebox import *
 
 import os, os.path 
 
-import models.project, models.autoload, views.nav
+import models.project, models.autoload, views.nav, models.solution
+
+
 
 init = Tk()
 init.title("Initialisation")
