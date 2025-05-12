@@ -95,13 +95,14 @@ def effectVersion(comboSolution: ttk.Combobox, name: Entry, link: Entry, version
         models.solution.addSolution(name.get(), link.get(), versions.get(0, "end"))
 
 def verifySupprSolution(solution, comboSolution: ttk.Combobox, window: Tk):
-    if askyesno('Confirmation', 'Voulez-vous supprimer la solution ' + solution + '?'):
-        models.solution.supprSolution(solution)
-        comboSolution.current(0)
-        values = list(comboSolution["values"])
-        values.remove(solution)
-        comboSolution["values"] = tuple(values)
-        resetEntries(window)
+    if(comboSolution.get() == 0):
+        if askyesno('Confirmation', 'Voulez-vous supprimer la solution ' + solution + '?'):
+            models.solution.supprSolution(solution)
+            comboSolution.current(0)
+            values = list(comboSolution["values"])
+            values.remove(solution)
+            comboSolution["values"] = tuple(values)
+            resetEntries(window)
 
 def resetEntries(window: Tk):
     for child in window.winfo_children():

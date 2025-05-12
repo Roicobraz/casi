@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import ttk
 from tkinter.messagebox import *
 
-import models.project
+import models.project, models.solution
 
 def verifySupprProject(project, comboProject: ttk.Combobox, frame_content):
     if askyesno('Confirmation', 'Voulez-vous supprimer le projet ' + project + '?'):
@@ -38,7 +38,14 @@ def project_frame(frame_content: Frame, comboProject: ttk.Combobox):
         Label(frame_content, text="Nom du projet").pack()
         Entry(frame_content).pack()
 
-        Label(frame_content, text="combobox des framewok/cms").pack()
-        Label(frame_content, text="combobox des versions").pack()
+        comboSolution = ttk.Combobox(frame_content, width=25)
+        comboSolution["values"] = models.solution.updcomboboxSolutions()
+        comboSolution.current(0)
+        comboSolution.pack()
+
+        comboSolution = ttk.Combobox(frame_content, width=25)
+        comboSolution["values"] = ["Choisir une version"]
+        comboSolution.current(0)
+        comboSolution.pack()
 
         Button(frame_content, text="Créer le projet").pack()

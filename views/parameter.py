@@ -18,7 +18,6 @@ def parameter_frame(frame_content: Frame):
 
     btnSolution = Button(frame_content, text="Gérer les Frameworks/CMS", bg="white", command=lambda: views.solution.solution_window())
 
-
     checkBtn_autoload.pack()
     repository.pack()
     btnPath.pack()
