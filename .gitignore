@@ -4,4 +4,4 @@
 
 # pour les prochianes maj
 /models/server.py
-/views/db.py
+/views/dbView.py

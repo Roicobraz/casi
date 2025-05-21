@@ -4,6 +4,7 @@
 > V0.1 -
 > 09/05/2025 -
 > Roicobraz
+> Python 3.12.7
 
 Concepteur d'Architecture de Solutions Internet.  
 Il a pour but de gérer et installer facilement, rapidement des solutions web.
